@@ -16,11 +16,23 @@ const Main = (props) => {
             .catch(err => console.error(err));
     },[]);
 
+    const removeFromDom = productId => {
+        setProducts(products.filter(products => products._id !== productId));
+    }
+
+    const createProduct = product => {
+        axios.post('http://localhost:8000/api/products/add', product)
+            .then(res => {
+                setProducts([...products, res.data]);
+            })
+    }
+
     return (
         <div>
-            <ProductForm />
+            <h2 className='text-center text-light'>Create a Product</h2>
+            <ProductForm onSubmitProp={createProduct} initialTitle="" initialPrice="" initialDescription=""/>
         <hr/>
-        {loaded && <ProductList products={products}/>}
+        {loaded && <ProductList products={products} removeFromDom={removeFromDom} />}
         </div>
     )
 }
