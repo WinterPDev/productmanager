@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default () => {
+const ProductForm = (props) => {
     const [title, setTitle] = useState("");
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState("");
+    const history = useHistory();
     
     const onSubmitHandler = e => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/product/create', {
+        axios.post('http://localhost:8000/api/products/add', {
             title,
             price,
             description
         })
             .then(res=>console.log(res))
             .catch(err=>console.log(err))
+            history.pushState('/products')
     }
 
     return (
@@ -49,3 +52,5 @@ export default () => {
     )
 
 }
+
+export default ProductForm;
